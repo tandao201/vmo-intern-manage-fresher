@@ -4,6 +4,7 @@ import com.vmo_intern.manage_fresher.base.IBaseService;
 import com.vmo_intern.manage_fresher.models.entities.ExampleEntity;
 import com.vmo_intern.manage_fresher.repositories.IExampleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -73,5 +74,10 @@ public class ExampleService implements IBaseService<ExampleEntity> {
     @Override
     public List<ExampleEntity> findAll() {
         return iExampleRepository.findAll();
+    }
+
+    @Override
+    public Page<ExampleEntity> findAllPaging(int page, int pageSize, String sortBy) {
+        return null;
     }
 }

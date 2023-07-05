@@ -1,7 +1,7 @@
 package com.vmo_intern.manage_fresher.repositories;
 
 import com.vmo_intern.manage_fresher.models.entities.UserEntity;
-import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.repository.PagingAndSortingRepository;
 
-public interface IUserRepository extends JpaRepository<UserEntity, Integer> {
+public interface IUserRepository extends PagingAndSortingRepository<UserEntity, Integer> {
 }

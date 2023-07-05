@@ -4,8 +4,12 @@ import com.vmo_intern.manage_fresher.base.IBaseService;
 import com.vmo_intern.manage_fresher.models.entities.UserEntity;
 import com.vmo_intern.manage_fresher.repositories.IUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import org.springframework.data.domain.*;
+
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -71,6 +75,16 @@ public class UserService implements IBaseService<UserEntity> {
 
     @Override
     public List<UserEntity> findAll() {
-        return iUserRepository.findAll();
+        return (List<UserEntity>) iUserRepository.findAll();
+    }
+
+    @Override
+    public Page<UserEntity> findAllPaging(int page, int pageSize, String sortBy) {
+        Pageable paging = PageRequest.of(page, pageSize, Sort.by(sortBy));
+        Page<UserEntity> pageResult = iUserRepository.findAll(paging);
+        if (pageResult.hasContent()) {
+            return pageResult;
+        }
+        return null;
     }
 }
