@@ -1,49 +1,47 @@
 package com.vmo_intern.manage_fresher.apis;
 
-import com.vmo_intern.manage_fresher.models.dto_entities.UserEntityDto;
-import com.vmo_intern.manage_fresher.models.entities.UserEntity;
+import com.vmo_intern.manage_fresher.models.dto_entities.OfficeEntityDto;
+import com.vmo_intern.manage_fresher.models.entities.OfficeEntity;
 import com.vmo_intern.manage_fresher.models.paging.PageInfo;
 import com.vmo_intern.manage_fresher.models.paging.PagingEntity;
 import com.vmo_intern.manage_fresher.models.result.Result;
 import com.vmo_intern.manage_fresher.models.result.ResultGenerator;
-import com.vmo_intern.manage_fresher.services.UserService;
+import com.vmo_intern.manage_fresher.services.OfficeService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
-import java.util.List;
 
 @RestController
-@RequestMapping("/api/user")
+@RequestMapping("/api/office")
 @CrossOrigin("*")
-public class UserController {
-
+public class OfficeController {
     @Autowired
-    UserService userService;
+    OfficeService officeService;
 
     private ModelMapper modelMapper = new ModelMapper();
 
-    public UserController() {
+    public OfficeController() {
         modelMapper.getConfiguration().setAmbiguityIgnored(true);
     }
 
     @GetMapping("")
-    public Result getUsers(
+    public Result getOffices(
             @RequestParam(defaultValue = "1") Integer page,
             @RequestParam(defaultValue = "10") Integer pageSize,
             @RequestParam(defaultValue = "id") String sortBy
     ) {
-        Page<UserEntity> usersPage = userService.findAllPaging(page-1, pageSize, sortBy);
+        Page<OfficeEntity> officeEntityPage = officeService.findAllPaging(page-1, pageSize, sortBy);
         PagingEntity pagingEntity;
-        if (usersPage != null) {
+        if (officeEntityPage != null) {
             pagingEntity = new PagingEntity(
-                    usersPage.getContent(),
+                    officeEntityPage.getContent(),
                     new PageInfo(
                             page,
                             pageSize,
-                            usersPage.getTotalElements()
+                            officeEntityPage.getTotalElements()
                     )
             );
         } else {
@@ -60,32 +58,32 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
-    public Result getUserById(@PathVariable("id") int id) {
-        UserEntity userEntity = userService.findById(id);
-        if (userEntity == null) return ResultGenerator.genFailResult("Not found");
-        return ResultGenerator.genSuccessResult(userEntity);
+    public Result getOfficeById(@PathVariable("id") int id) {
+        OfficeEntity officeEntity = officeService.findById(id);
+        if (officeEntity == null) return ResultGenerator.genFailResult("Not found");
+        return ResultGenerator.genSuccessResult(officeEntity);
     }
 
     @PostMapping("")
-    public Result createUser(@RequestBody UserEntityDto entityDto) {
-        UserEntity entity = modelMapper.map(entityDto, UserEntity.class);
-        UserEntity userEntity = userService.save(entity);
-        if (userEntity == null) return ResultGenerator.genFailResult("");
-        return ResultGenerator.genSuccessResult(userEntity);
+    public Result createOffice(@RequestBody OfficeEntityDto entityDto) {
+        OfficeEntity entity = modelMapper.map(entityDto, OfficeEntity.class);
+        OfficeEntity officeEntity = officeService.save(entity);
+        if (officeEntity == null) return ResultGenerator.genFailResult("");
+        return ResultGenerator.genSuccessResult(officeEntity);
     }
 
     @PutMapping("/{id}")
-    public Result editUser(@RequestBody UserEntityDto entityDto, @PathVariable("id") int id) {
-        UserEntity entity = modelMapper.map(entityDto, UserEntity.class);
+    public Result editOffice(@RequestBody OfficeEntityDto entityDto, @PathVariable("id") int id) {
+        OfficeEntity entity = modelMapper.map(entityDto, OfficeEntity.class);
         entity.setId(id);
-        int result = userService.update(entity);
+        int result = officeService.update(entity);
         if (result == 0) return ResultGenerator.genFailResult("");
         return ResultGenerator.genSuccessResult();
     }
 
     @DeleteMapping("/{id}")
-    public Result deleteUser(@PathVariable("id") int id) {
-        int result = userService.deleteById(id);
+    public Result deleteOffice(@PathVariable("id") int id) {
+        int result = officeService.deleteById(id);
         if (result == 0) return ResultGenerator.genFailResult("");
         return ResultGenerator.genSuccessResult();
     }
