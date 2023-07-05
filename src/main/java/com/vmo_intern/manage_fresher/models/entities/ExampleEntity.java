@@ -24,9 +24,12 @@ public class ExampleEntity extends BaseEntity {
     public ExampleEntity(int id, String name) {
         this.id = id;
         this.name = name;
+        Date now = new Date();
+        this.setCreatedAt(now);
+        this.setUpdatedAt(now);
     }
 
-    public ExampleEntity(int id, String name, Date createdAt, Date updatedAt) {
+    public ExampleEntity(int id, String name,Date createdAt, Date updatedAt) {
         this.id = id;
         this.name = name;
         this.setCreatedAt(createdAt);

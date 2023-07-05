@@ -1,16 +1,17 @@
 package com.vmo_intern.manage_fresher.base;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
-import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import javax.persistence.Column;
-import javax.persistence.MappedSuperclass;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+import javax.persistence.*;
 import java.util.Date;
 
 @Data
+@EntityListeners(AuditingEntityListener.class)
 @MappedSuperclass
 @JsonIgnoreProperties(
         value = {"createdAt", "updatedAt"},
@@ -19,13 +20,15 @@ import java.util.Date;
 public abstract class BaseEntity {
 
     @Temporal(TemporalType.TIMESTAMP)
-    @DateTimeFormat( pattern = "yyyy-MM-dd'T'HH:mm" )
-    @Column(name = "created_at",columnDefinition="TIMESTAMP DEFAULT CURRENT_TIMESTAMP", updatable = false)
+    @CreatedDate
+    @Column(name = "created_at", updatable = false)
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSZ")
     private Date createdAt;
 
     @Temporal(TemporalType.TIMESTAMP)
-    @DateTimeFormat( pattern = "yyyy-MM-dd'T'HH:mm" )
-    @Column(name = "updated_at", columnDefinition="TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP")
+    @LastModifiedDate
+    @Column(name = "updated_at")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSZ")
     private Date updatedAt;
 
     public Date getCreatedAt() {

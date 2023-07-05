@@ -6,6 +6,7 @@ import com.vmo_intern.manage_fresher.repositories.IExampleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -16,6 +17,9 @@ public class ExampleService implements IBaseService<ExampleEntity> {
     private IExampleRepository iExampleRepository;
     @Override
     public ExampleEntity save(ExampleEntity model) {
+        Date now = new Date();
+        model.setCreatedAt(now);
+        model.setUpdatedAt(now);
         return iExampleRepository.save(model);
     }
 
@@ -42,6 +46,7 @@ public class ExampleService implements IBaseService<ExampleEntity> {
     public int update(ExampleEntity model) {
         Optional<ExampleEntity> optional = iExampleRepository.findById(model.getId());
         if (optional.isPresent()) {
+            model.setUpdatedAt(new Date());
             iExampleRepository.save(ExampleEntity.clone(model));
             return 1;
         }
