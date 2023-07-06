@@ -6,6 +6,7 @@ import lombok.EqualsAndHashCode;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name = "user")
@@ -26,6 +27,10 @@ public class UserEntity extends BaseEntity {
     private String avatar;
     private String email;
     private String phone;
+
+
+    @OneToMany
+    private List<ProgrammingLanguageEntity> programmingLanguageEntities;
 
     public UserEntity() {
     }

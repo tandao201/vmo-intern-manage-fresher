@@ -2,7 +2,7 @@ package com.vmo_intern.manage_fresher.models.dto_entities;
 
 import com.alibaba.fastjson.JSON;
 
-import javax.persistence.Column;
+import java.util.List;
 
 public class UserEntityDto {
     private int idOffice;
@@ -13,11 +13,12 @@ public class UserEntityDto {
     private String avatar;
     private String email;
     private String phone;
+    private List<Integer> programmingLanguageIds;
 
     public UserEntityDto() {
     }
 
-    public UserEntityDto(int idOffice, int idRole, String name, int gender, String address, String avatar, String email, String phone) {
+    public UserEntityDto(int idOffice, int idRole, String name, int gender, String address, String avatar, String email, String phone, List<Integer> programmingLanguageIds) {
         this.idOffice = idOffice;
         this.idRole = idRole;
         this.name = name;
@@ -26,6 +27,7 @@ public class UserEntityDto {
         this.avatar = avatar;
         this.email = email;
         this.phone = phone;
+        this.programmingLanguageIds = programmingLanguageIds;
     }
 
     public int getIdOffice() {
@@ -90,6 +92,14 @@ public class UserEntityDto {
 
     public void setPhone(String phone) {
         this.phone = phone;
+    }
+
+    public List<Integer> getProgrammingLanguageIds() {
+        return programmingLanguageIds;
+    }
+
+    public void setProgrammingLanguageIds(List<Integer> programmingLanguageIds) {
+        this.programmingLanguageIds = programmingLanguageIds;
     }
 
     @Override

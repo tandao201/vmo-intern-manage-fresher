@@ -1,4 +1,4 @@
-package com.vmo_intern.manage_fresher.exceptions;
+package com.vmo_intern.manage_fresher.exceptions_handler.exceptions;
 
 public class ServiceException extends RuntimeException {
     public ServiceException() {
