@@ -1,5 +1,5 @@
 FROM openjdk:11-jdk-slim
 WORKDIR /tmp
-COPY target/manage_fresher1.0.0.jar app.jar
+COPY /tmp/target/manage_fresher-1.0.0.jar manage_fresher-1.0.0.jar
 EXPOSE 8080
-ENTRYPOINT ["java","-jar","/app.jar"]
+ENTRYPOINT ["java","-jar","/manage_fresher-1.0.0.jar"]
