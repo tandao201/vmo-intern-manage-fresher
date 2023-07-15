@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -88,7 +89,16 @@ public class UserService implements IBaseService<UserEntity> {
         return null;
     }
 
-    public Page<UserEntity> findAllPagingAndSearch(int page, int pageSize, String sortBy, String email, int languageId) {
+    public Page<UserEntity> findAllPagingAndSearch(Map<String , Object> queryParam) {
+        int page = (Integer) queryParam.get("page");
+        int pageSize = (Integer) queryParam.get("pageSize");
+        String sortBy = (String) queryParam.get("sortBy");
+        String email = (String) queryParam.get("email");
+        int languageId = (Integer) queryParam.get("languageId");
+        int officeId = (Integer) queryParam.get("officeId");
+        Double scoreFrom = (Double) queryParam.get("scoreFrom");
+        Double scoreTo = (Double) queryParam.get("scoreTo");
+
         Pageable paging = PageRequest.of(page, pageSize, Sort.by(sortBy));
         Page<UserEntity> pageResult;
         if (email.isEmpty()) {
@@ -98,6 +108,12 @@ public class UserService implements IBaseService<UserEntity> {
         }
         if (languageId != -1) {
             pageResult = iUserRepository.findByProgrammingLanguageEntitiesId(paging, languageId);
+        }
+        if (officeId != -1) {
+            pageResult = iUserRepository.findByIdOffice(paging, officeId);
+        }
+        if (scoreFrom != -1.0 && scoreTo != 1.0) {
+            pageResult = iUserRepository.findOrdersByTotalPrice(paging,scoreFrom, scoreTo);
         }
         if (pageResult.hasContent()) {
             return pageResult;

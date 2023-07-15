@@ -18,7 +18,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.IntStream;
 
 import static java.util.stream.Collectors.toList;
@@ -48,9 +50,22 @@ public class UserController {
             @RequestParam(defaultValue = "10") Integer pageSize,
             @RequestParam(defaultValue = "id") String sortBy,
             @RequestParam(defaultValue = "") String email,
-            @RequestParam(defaultValue = "-1") Integer languageId
+            @RequestParam(defaultValue = "-1") Integer languageId,
+            @RequestParam(defaultValue = "-1") Integer officeId,
+            @RequestParam(defaultValue = "-1") Double scoreFrom,
+            @RequestParam(defaultValue = "-1") Double scoreTo
     ) {
-        Page<UserEntity> usersPage = userService.findAllPagingAndSearch(page - 1, pageSize, sortBy, email, languageId);
+        Map<String , Object> queryParam = new HashMap<>();
+        queryParam.put("page", page-1);
+        queryParam.put("pageSize", pageSize);
+        queryParam.put("sortBy", sortBy);
+        queryParam.put("email", email);
+        queryParam.put("languageId", languageId);
+        queryParam.put("officeId", officeId);
+        queryParam.put("scoreFrom", scoreFrom);
+        queryParam.put("scoreTo", scoreTo);
+
+        Page<UserEntity> usersPage = userService.findAllPagingAndSearch(queryParam);
         PagingEntity pagingEntity;
         if (usersPage != null) {
             pagingEntity = new PagingEntity(
