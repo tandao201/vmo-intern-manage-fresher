@@ -1,10 +1,12 @@
 package com.vmo_intern.manage_fresher.models.entities;
 
+import com.alibaba.fastjson.JSON;
 import com.vmo_intern.manage_fresher.base.BaseEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
@@ -12,7 +14,7 @@ import java.util.List;
 @Table(name = "user")
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class UserEntity extends BaseEntity {
+public class UserEntity extends BaseEntity implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -32,10 +34,16 @@ public class UserEntity extends BaseEntity {
     @OneToMany
     private List<ProgrammingLanguageEntity> programmingLanguageEntities;
 
+    @OneToMany
+    private List<ScoreEntity> scoreEntities;
+
+    @Column(name = "average_score")
+    private double averageScore;
+
     public UserEntity() {
     }
 
-    public UserEntity(int id, int idOffice, int idRole, String name, int gender, String address, String avatar, String email, String phone) {
+    public UserEntity(int id, int idOffice, int idRole, String name, int gender, String address, String avatar, String email, String phone, List<ProgrammingLanguageEntity> programmingLanguageEntities, List<ScoreEntity> scoreEntities, double averageScore) {
         this.id = id;
         this.idOffice = idOffice;
         this.idRole = idRole;
@@ -45,13 +53,16 @@ public class UserEntity extends BaseEntity {
         this.avatar = avatar;
         this.email = email;
         this.phone = phone;
+        this.programmingLanguageEntities = programmingLanguageEntities;
+        this.scoreEntities = scoreEntities;
+        this.averageScore = averageScore;
 
         Date now = new Date();
         this.setCreatedAt(now);
         this.setUpdatedAt(now);
     }
 
-    public UserEntity(int id, int idOffice, int idRole, String name, int gender, String address, String avatar, String email, String phone, Date createdAt, Date updatedAt) {
+    public UserEntity(int id, int idOffice, int idRole, String name, int gender, String address, String avatar, String email, String phone, List<ProgrammingLanguageEntity> programmingLanguageEntities, List<ScoreEntity> scoreEntities, double averageScore, Date createdAt, Date updatedAt) {
         this.id = id;
         this.idOffice = idOffice;
         this.idRole = idRole;
@@ -61,6 +72,9 @@ public class UserEntity extends BaseEntity {
         this.avatar = avatar;
         this.email = email;
         this.phone = phone;
+        this.programmingLanguageEntities = programmingLanguageEntities;
+        this.scoreEntities = scoreEntities;
+        this.averageScore = averageScore;
 
         this.setCreatedAt(createdAt);
         this.setUpdatedAt(updatedAt);
@@ -77,6 +91,9 @@ public class UserEntity extends BaseEntity {
                 userEntity.avatar,
                 userEntity.email,
                 userEntity.phone,
+                userEntity.programmingLanguageEntities,
+                userEntity.scoreEntities,
+                userEntity.averageScore,
                 userEntity.getCreatedAt(),
                 userEntity.getUpdatedAt()
         );
@@ -154,18 +171,37 @@ public class UserEntity extends BaseEntity {
         this.phone = phone;
     }
 
+    public List<ProgrammingLanguageEntity> getProgrammingLanguageEntities() {
+        return programmingLanguageEntities;
+    }
+
+    public void setProgrammingLanguageEntities(List<ProgrammingLanguageEntity> programmingLanguageEntities) {
+        this.programmingLanguageEntities = programmingLanguageEntities;
+    }
+
+    public List<ScoreEntity> getScoreEntities() {
+        return scoreEntities;
+    }
+
+    public void setScoreEntities(List<ScoreEntity> scoreEntities) {
+        this.scoreEntities = scoreEntities;
+    }
+
+    public double getAverageScore() {
+        if (scoreEntities == null) return 0;
+        double total = 0;
+        for (ScoreEntity scoreEntity: scoreEntities) {
+            total += scoreEntity.getResult();
+        }
+        return total / 3;
+    }
+
+    public void setAverageScore(double averageScore) {
+        this.averageScore = averageScore;
+    }
+
     @Override
     public String toString() {
-        return "User{" +
-                "id=" + id +
-                ", idOffice=" + idOffice +
-                ", idRole=" + idRole +
-                ", name='" + name + '\'' +
-                ", gender=" + gender +
-                ", address='" + address + '\'' +
-                ", avatar='" + avatar + '\'' +
-                ", email='" + email + '\'' +
-                ", phone='" + phone + '\'' +
-                '}';
+        return JSON.toJSONString(this);
     }
 }

@@ -14,11 +14,12 @@ public class UserEntityDto {
     private String email;
     private String phone;
     private List<Integer> programmingLanguageIds;
+    private List<Double> scores;
 
     public UserEntityDto() {
     }
 
-    public UserEntityDto(int idOffice, int idRole, String name, int gender, String address, String avatar, String email, String phone, List<Integer> programmingLanguageIds) {
+    public UserEntityDto(int idOffice, int idRole, String name, int gender, String address, String avatar, String email, String phone, List<Integer> programmingLanguageIds, List<Double> scores) {
         this.idOffice = idOffice;
         this.idRole = idRole;
         this.name = name;
@@ -28,6 +29,7 @@ public class UserEntityDto {
         this.email = email;
         this.phone = phone;
         this.programmingLanguageIds = programmingLanguageIds;
+        this.scores = scores;
     }
 
     public int getIdOffice() {
@@ -100,6 +102,14 @@ public class UserEntityDto {
 
     public void setProgrammingLanguageIds(List<Integer> programmingLanguageIds) {
         this.programmingLanguageIds = programmingLanguageIds;
+    }
+
+    public List<Double> getScores() {
+        return scores;
+    }
+
+    public void setScores(List<Double> scores) {
+        this.scores = scores;
     }
 
     @Override

@@ -2,12 +2,14 @@ package com.vmo_intern.manage_fresher.apis;
 
 import com.vmo_intern.manage_fresher.exceptions_handler.exceptions.ResourceNotFoundException;
 import com.vmo_intern.manage_fresher.models.dto_entities.UserEntityDto;
+import com.vmo_intern.manage_fresher.models.entities.ScoreEntity;
 import com.vmo_intern.manage_fresher.models.entities.UserEntity;
 import com.vmo_intern.manage_fresher.models.entities.UserProgrammingLanguageEntity;
 import com.vmo_intern.manage_fresher.models.paging.PageInfo;
 import com.vmo_intern.manage_fresher.models.paging.PagingEntity;
 import com.vmo_intern.manage_fresher.models.result.Result;
 import com.vmo_intern.manage_fresher.models.result.ResultGenerator;
+import com.vmo_intern.manage_fresher.services.ScoreService;
 import com.vmo_intern.manage_fresher.services.UserProgrammingLanguageService;
 import com.vmo_intern.manage_fresher.services.UserService;
 import org.modelmapper.ModelMapper;
@@ -15,9 +17,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 
-import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.IntStream;
+
+import static java.util.stream.Collectors.toList;
 
 @RestController
 @RequestMapping("/api/user")
@@ -28,6 +32,8 @@ public class UserController {
     UserService userService;
     @Autowired
     UserProgrammingLanguageService userProgrammingLanguageService;
+    @Autowired
+    ScoreService scoreService;
 
     private ModelMapper modelMapper = new ModelMapper();
 
@@ -40,9 +46,11 @@ public class UserController {
     public Result getUsers(
             @RequestParam(defaultValue = "1") Integer page,
             @RequestParam(defaultValue = "10") Integer pageSize,
-            @RequestParam(defaultValue = "id") String sortBy
+            @RequestParam(defaultValue = "id") String sortBy,
+            @RequestParam(defaultValue = "") String email,
+            @RequestParam(defaultValue = "-1") Integer languageId
     ) {
-        Page<UserEntity> usersPage = userService.findAllPaging(page-1, pageSize, sortBy);
+        Page<UserEntity> usersPage = userService.findAllPagingAndSearch(page - 1, pageSize, sortBy, email, languageId);
         PagingEntity pagingEntity;
         if (usersPage != null) {
             pagingEntity = new PagingEntity(
@@ -93,12 +101,18 @@ public class UserController {
         UserEntity entity = modelMapper.map(entityDto, UserEntity.class);
         entity.setId(id);
 
-        // save programming language
         List<UserProgrammingLanguageEntity> userLanguages = entityDto.getProgrammingLanguageIds().stream().map(
                 idLanguage -> new UserProgrammingLanguageEntity(id, idLanguage)
         ).toList();
-        userProgrammingLanguageService.updateList(id,userLanguages);
+
+        List<ScoreEntity> scoreEntities =
+                IntStream.range(0, entityDto.getScores().size())
+                        .mapToObj(i -> new ScoreEntity(id, i + 1, String.format("Bài test %S", i + 1), entityDto.getScores().get(i)))
+                        .collect(toList());
+
         int result = userService.update(entity);
+        scoreService.save(scoreEntities); // save score
+        userProgrammingLanguageService.save(userLanguages); // save programming language
         if (result == 0) return ResultGenerator.genFailResult("");
         return ResultGenerator.genSuccessResult();
     }

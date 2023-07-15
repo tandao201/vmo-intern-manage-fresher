@@ -1,13 +1,17 @@
 package com.vmo_intern.manage_fresher.models.entities;
 
 import com.alibaba.fastjson.JSON;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.*;
 
 @Entity
 @Table(name = "user_programming_language_entities")
-@Data
+@Setter
+@Getter
 public class UserProgrammingLanguageEntity {
 
     @Id

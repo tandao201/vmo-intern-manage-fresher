@@ -68,9 +68,6 @@ public class UserProgrammingLanguageService implements IBaseService<UserProgramm
     }
 
     public void updateList(int userEntityId, List<UserProgrammingLanguageEntity> models) {
-        System.out.println("userEntityId: "+userEntityId);
-        iUserProgrammingLanguageRepository.deleteByUserEntityId(userEntityId);
-        System.out.println("List: "+models);
         save(models);
     }
 }

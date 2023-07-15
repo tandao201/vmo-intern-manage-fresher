@@ -87,4 +87,30 @@ public class UserService implements IBaseService<UserEntity> {
         }
         return null;
     }
+
+    public Page<UserEntity> findAllPagingAndSearch(int page, int pageSize, String sortBy, String email, int languageId) {
+        Pageable paging = PageRequest.of(page, pageSize, Sort.by(sortBy));
+        Page<UserEntity> pageResult;
+        if (email.isEmpty()) {
+            pageResult = iUserRepository.findAll(paging);
+        } else {
+            pageResult = iUserRepository.findByEmailContaining(paging, email);
+        }
+        if (languageId != -1) {
+            pageResult = iUserRepository.findByProgrammingLanguageEntitiesId(paging, languageId);
+        }
+        if (pageResult.hasContent()) {
+            return pageResult;
+        }
+        return null;
+    }
+
+    public Page<UserEntity> findByEmail(int page, int pageSize, String sortBy, String email) {
+        Pageable paging = PageRequest.of(page, pageSize, Sort.by(sortBy));
+        Page<UserEntity> pageResult = iUserRepository.findByEmailContaining(paging, email);
+        if (pageResult.hasContent()) {
+            return pageResult;
+        }
+        return null;
+    }
 }
