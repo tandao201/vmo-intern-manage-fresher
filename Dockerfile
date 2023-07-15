@@ -2,13 +2,13 @@
 FROM adoptopenjdk:16-jre-hotspot
 
 # Set the working directory in the container to /app
-WORKDIR /app
+WORKDIR /api-fresher-manager
 
 # Copy the Spring Boot application JAR file to the container
-COPY target/spring-app.jar /app
+COPY /api-fresher-manager/target/api-fresher-manager.jar /api-fresher-manager
 
 # Expose port 8080, which is the default port for Spring Boot applications
 EXPOSE 8080
 
 # Set the command to run when the container is started
-CMD ["java", "-jar", "spring-app.jar"]
+CMD ["java", "-jar", "api-fresher-manager.jar"]
