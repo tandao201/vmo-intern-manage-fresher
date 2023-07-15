@@ -1,8 +1,17 @@
-# Use a base image with Java 16 pre-installed
-FROM ubuntu:16.04
-FROM openjdk:11-jdk-slim
 
-COPY --from=build /target/manage_fresher-1.0.0.jar manage_fresher.jar
-# ENV PORT=8080
+#
+# Build stage
+#
+FROM maven:3.8.7-openjdk-11 AS build
+WORKDIR /app
+COPY . /app/
+RUN mvn clean package
+
+#
+# Package stage
+#
+FROM openjdk:11-jdk-slim
+WORKDIR /app
+COPY --from=build /app/target/*.jar /app/app.jar
 EXPOSE 8080
-ENTRYPOINT ["java","-jar","manage_fresher.jar"]
+ENTRYPOINT ["java","-jar","app.jar"]
