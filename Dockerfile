@@ -1,7 +1,11 @@
-# Package stage
-#
-FROM adoptopenjdk:16-jdk-hotspot
+# Use a base image with Java 16 installed
+FROM adoptopenjdk:16-jre-hotspot
+
+# Set the working directory to /app
 WORKDIR /app
-COPY --from=build /app/target/*.jar /app/app.jar
-EXPOSE 8080
-ENTRYPOINT ["java","-jar","app.jar"]
+
+# Copy the JAR file into the container at /app
+COPY target/app.jar /app
+
+# Run the command to start the Spring Boot application
+CMD ["java", "-jar", "app.jar"]

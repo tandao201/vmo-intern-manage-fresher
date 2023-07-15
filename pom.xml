@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>com.vmo_intern</groupId>
 	<artifactId>manage_fresher</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>1.0.0</version>
 	<name>manage_fresher</name>
 	<description>Manage fresher</description>
 	<properties>
