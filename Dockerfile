@@ -1,8 +1,3 @@
-WORKDIR /app
-COPY . /app/
-RUN mvn clean package
-
-#
 # Package stage
 #
 FROM adoptopenjdk:16-jdk-hotspot
