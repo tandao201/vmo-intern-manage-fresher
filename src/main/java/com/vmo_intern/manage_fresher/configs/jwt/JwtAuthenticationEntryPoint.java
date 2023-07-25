@@ -1,6 +1,10 @@
 package com.vmo_intern.manage_fresher.configs.jwt;
 
+import com.alibaba.fastjson.JSON;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.vmo_intern.manage_fresher.models.result.Result;
+import com.vmo_intern.manage_fresher.models.result.ResultCode;
+import com.vmo_intern.manage_fresher.models.result.ResultGenerator;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
@@ -26,13 +30,11 @@ public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint, Se
 
         response.setStatus(HttpStatus.UNAUTHORIZED.value());
 
-        Map<String, Object> data = new HashMap<>();
-        data.put("message", "UNAUTHORIZED");
-        data.put("timestamp", new Date());
+        Result result = ResultGenerator.genFailResult("Unauthorized", ResultCode.UNAUTHORIZED);
 
         OutputStream out = response.getOutputStream();
         ObjectMapper mapper = new ObjectMapper();
-        mapper.writeValue(out, data);
+        mapper.writeValue(out, result);
         out.flush();
     }
 }
