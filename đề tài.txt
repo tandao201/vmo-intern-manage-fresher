@@ -1,0 +1,26 @@
+- Qu?n lý Fresher
+    - View S? Lu?ng Fresher
+    - Thêm Fresher m?i
+    - Xóa Fresher cu
+    - Thay d?i Thông tin Fresher
+    - Tính Ði?m cho t?ng fresher theo các bài t?p l?n (3 bài  - bài 1 bài 2 bài 3 ) di?m s? cu?i cùng tính b?ng cách c?ng trung bình
+    - Tìm fresher theo tên, theo ngôn ng? l?p trình, theo email,
+- Qu?n Lý các Trung tâm trong cây
+    - Xem t?t c? các trung tâm
+    - T?o m?i Trung tâm
+    -  Xóa Trung tâm
+    - Update trung tâm
+    - Ðua fresher vào trung tâm
+- Dashboard
+    - Th?ng kê s? lu?ng fresher theo t?ng trung tâm
+    - Th?ng kê s? lu?ng fresher theo di?m s?
+
+Yêu c?u:
+- S? d?ng Java 16
+- S? d?ng Spring boot Spring JPA
+- Dùng postman d? g?i API ko c?n code giao di?n
+- Có token Authentication (bearer)
+- Dùng Controller Advice d? x? lý exception
+- S? d?ng PostgreSQL(my SQL)
+- Apply Swagger
+
