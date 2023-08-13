@@ -23,7 +23,7 @@ public class ExampleController {
     @GetMapping("/{id}")
     public Result getExampleById(@PathVariable("id") int id) {
         ExampleEntity exampleEntity = exampleService.findById(id);
-        if (exampleEntity == null)  return ResultGenerator.genFailResult("Not found");
+        if (exampleEntity == null)  return ResultGenerator.genFailResult("Not found entity");
         return ResultGenerator.genSuccessResult(exampleEntity);
     }
 
